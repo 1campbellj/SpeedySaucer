@@ -1,11 +1,72 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3j6awrqaq2of"]
+[gd_scene load_steps=7 format=3 uid="uid://c3j6awrqaq2of"]
 
+[ext_resource type="Script" uid="uid://dv1ul1mw8tokq" path="res://level.gd" id="1_hn12h"]
 [ext_resource type="Texture2D" uid="uid://du28yte40rso8" path="res://purple.png" id="1_s3s2j"]
+[ext_resource type="PackedScene" uid="uid://d17dawlx5nqdq" path="res://player.tscn" id="2_onv8r"]
+[ext_resource type="PackedScene" uid="uid://r84f7dn7clem" path="res://maze.tscn" id="4_ihfcg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ihfcg"]
+font_size = 50
+
+[sub_resource type="LabelSettings" id="LabelSettings_rka8t"]
+font_size = 20
 
 [node name="Level1" type="Node2D"]
+script = ExtResource("1_hn12h")
 
-[node name="Background" type="TextureRect" parent="."]
-offset_right = 2000.0
-offset_bottom = 1000.0
+[node name="Graphics" type="Node" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Graphics"]
+layer = -10
+
+[node name="Background" type="TextureRect" parent="Graphics/CanvasLayer"]
+z_index = -100
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_s3s2j")
 stretch_mode = 1
+
+[node name="StartLabel" type="Label" parent="Graphics"]
+z_index = -5
+offset_left = 599.0
+offset_top = 296.0
+offset_right = 716.0
+offset_bottom = 365.0
+text = "Start"
+label_settings = SubResource("LabelSettings_ihfcg")
+
+[node name="EndLabel" type="Label" parent="Graphics"]
+z_index = -5
+offset_left = 438.0
+offset_top = 854.0
+offset_right = 555.0
+offset_bottom = 923.0
+text = "End"
+label_settings = SubResource("LabelSettings_ihfcg")
+
+[node name="RulesLabel" type="Label" parent="Graphics"]
+offset_left = 912.0
+offset_top = 256.0
+offset_right = 1169.0
+offset_bottom = 501.0
+text = "Reach the end without
+leaving the maze.
+
+Use WASD or arrow keys.
+
+Here's a tip:
+Aim for the nerve stem
+and put em down for good"
+label_settings = SubResource("LabelSettings_rka8t")
+
+[node name="ParentPlayer" parent="." instance=ExtResource("2_onv8r")]
+position = Vector2(660, 402)
+
+[node name="Maze" parent="." instance=ExtResource("4_ihfcg")]
+z_index = -10
+position = Vector2(-19, -13)
+
+[connection signal="body_exited" from="Maze" to="." method="_on_maze_body_exited"]
